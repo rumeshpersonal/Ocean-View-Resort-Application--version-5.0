@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.oceanview.desktop.controller.LoginController">
+  <center>
+    <VBox spacing="15" style="-fx-padding: 40;">
+      <Label text="Ocean View Resort" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+      <Label text="Room Reservation System" style="-fx-font-size: 14;"/>
+      
+      <Separator/>
+      
+      <Label text="Login" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+      
+      <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Username:" minWidth="80"/>
+        <TextField fx:id="usernameField" prefWidth="200"/>
+      </HBox>
+      
+      <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Password:" minWidth="80"/>
+        <PasswordField fx:id="passwordField" prefWidth="200"/>
+      </HBox>
+      
+      <Label fx:id="errorLabel" style="-fx-text-fill: red;"/>
+      
+      <HBox spacing="10">
+        <Button text="Login" onAction="#handleLogin" style="-fx-padding: 10; -fx-font-size: 14;"/>
+        <Button text="Exit" onAction="#handleExit" style="-fx-padding: 10; -fx-font-size: 14;"/>
+      </HBox>
+    </VBox>
+  </center>
+</BorderPane>

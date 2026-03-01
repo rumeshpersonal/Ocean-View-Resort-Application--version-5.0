@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.oceanview.desktop.controller.GenerateBillController">
+  <center>
+    <VBox spacing="15" style="-fx-padding: 25;">
+      <Label text="Generate Bill" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+      
+      <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Reservation No:" minWidth="140"/>
+        <TextField fx:id="reservationNoField" prefWidth="250" promptText="e.g., RES-2026-0001"/>
+        <Button text="Generate" onAction="#handleGenerateBill" style="-fx-padding: 8;"/>
+      </HBox>
+      
+      <Separator/>
+      
+      <HBox spacing="10">
+        <Label text="Nights:" minWidth="140"/>
+        <Label fx:id="nightsLabel" text="-" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+      </HBox>
+      
+      <HBox spacing="10">
+        <Label text="Rate/Night:" minWidth="140"/>
+        <Label fx:id="rateLabel" text="-" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+      </HBox>
+      
+      <HBox spacing="10">
+        <Label text="Total Amount:" minWidth="140"/>
+        <Label fx:id="totalLabel" text="-" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: green;"/>
+      </HBox>
+      
+      <Separator/>
+      
+      <Label fx:id="messageLabel" style="-fx-text-fill: blue;"/>
+      
+      <HBox spacing="10">
+        <Button text="Cancel" onAction="#handleCancel" style="-fx-padding: 10; -fx-font-size: 14;"/>
+      </HBox>
+    </VBox>
+  </center>
+</BorderPane>
