@@ -1,5 +1,7 @@
+com\oceanview\desktop\controller\MainMenuController.class
 com\oceanview\desktop\controller\GenerateBillController.class
 com\oceanview\desktop\controller\HelpController.class
+com\oceanview\desktop\DesktopApplication.class
 com\oceanview\desktop\api\ApiClient$LoginRequest.class
 com\oceanview\desktop\controller\LoginController.class
 com\oceanview\desktop\api\ApiClient$BillResponse.class
