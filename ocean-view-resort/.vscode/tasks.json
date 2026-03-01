@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Ocean View Resort Project",
+			"type": "shell",
+			"command": "C:\\Users\\ASUS\\.maven\\maven-3.9.12\\bin\\mvn",
+			"args": [
+				"clean",
+				"install",
+				"-DskipTests"
+			],
+			"problemMatcher": [
+				"$mvn"
+			],
+			"group": "build"
+		}
+	]
+}
