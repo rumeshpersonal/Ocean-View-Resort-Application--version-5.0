@@ -1,0 +1,49 @@
+CREATE DATABASE IF NOT EXISTS ocean_view_resort
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE ocean_view_resort;
+
+-- USERS (for login)
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL
+);
+
+-- ROOM TYPES
+CREATE TABLE IF NOT EXISTS room_types (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  type_name ENUM('STANDARD','DELUXE','SUITE') NOT NULL UNIQUE,
+  rate_per_night DECIMAL(10,2) NOT NULL
+);
+
+-- GUESTS
+CREATE TABLE IF NOT EXISTS guests (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  full_name VARCHAR(100) NOT NULL,
+  address VARCHAR(200) NOT NULL,
+  contact_number VARCHAR(15) NOT NULL
+);
+
+-- RESERVATIONS
+CREATE TABLE IF NOT EXISTS reservations (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  reservation_no VARCHAR(30) NOT NULL UNIQUE,
+  guest_id BIGINT NOT NULL,
+  room_type_id BIGINT NOT NULL,
+  check_in DATE NOT NULL,
+  check_out DATE NOT NULL,
+  CONSTRAINT fk_res_guest FOREIGN KEY (guest_id) REFERENCES guests(id),
+  CONSTRAINT fk_res_roomtype FOREIGN KEY (room_type_id) REFERENCES room_types(id)
+);
+
+-- BILLS
+CREATE TABLE IF NOT EXISTS bills (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  reservation_id BIGINT NOT NULL UNIQUE,
+  nights INT NOT NULL,
+  total_amount DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_bill_res FOREIGN KEY (reservation_id) REFERENCES reservations(id)
+);
