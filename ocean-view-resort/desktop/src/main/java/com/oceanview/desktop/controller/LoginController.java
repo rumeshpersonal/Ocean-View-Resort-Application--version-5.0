@@ -41,8 +41,10 @@ public class LoginController {
   private void loadMainMenu() throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainmenu.fxml"));
     Parent root = loader.load();
-    Scene scene = new Scene(root, 600, 500);
+    MainMenuController controller = loader.getController();
     Stage stage = (Stage) usernameField.getScene().getWindow();
+    controller.setStage(stage);
+    Scene scene = new Scene(root, 600, 500);
     stage.setScene(scene);
   }
 }

@@ -41,8 +41,9 @@ public class MainMenuController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
     Parent root = loader.load();
     Scene scene = new Scene(root, 500, 400);
-    Stage stage = (Stage) getStage().getScene().getWindow();
-    stage.setScene(scene);
+    if (stage != null) {
+      stage.setScene(scene);
+    }
   }
 
   @FXML
@@ -60,7 +61,7 @@ public class MainMenuController {
     newStage.show();
   }
 
-  private Stage getStage() {
-    return (Stage) getClass().getClassLoader().toString().length() > 0 ? null : null;
+  public void setStage(Stage stage) {
+    this.stage = stage;
   }
 }
