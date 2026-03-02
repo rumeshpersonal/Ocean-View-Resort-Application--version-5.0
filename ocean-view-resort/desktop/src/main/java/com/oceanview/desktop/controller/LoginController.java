@@ -16,35 +16,49 @@ public class LoginController {
   @FXML private Label errorLabel;
 
   @FXML
-  private void handleLogin() {
-    String username = usernameField.getText().trim();
-    String password = passwordField.getText();
+private void handleLogin() {
+  String username = usernameField.getText().trim();
+  String password = passwordField.getText();
 
-    if (username.isEmpty() || password.isEmpty()) {
-      errorLabel.setText("Username and password are required");
-      return;
-    }
-
-    try {
-      ApiClient.login(username, password);
-      loadMainMenu();
-    } catch (Exception e) {
-      errorLabel.setText("Login failed: " + e.getMessage());
-    }
+  if (username.isEmpty() || password.isEmpty()) {
+    errorLabel.setText("Username and password are required");
+    return;
   }
+
+  errorLabel.setText("");
+
+  try {
+    ApiClient.login(username, password);
+  } catch (Exception e) {
+    e.printStackTrace();
+    errorLabel.setText("Login API failed: " + e.getMessage());
+    return;
+  }
+
+  try {
+    loadMainMenu();
+  } catch (Exception e) {
+    e.printStackTrace();
+    errorLabel.setText("UI load failed: " + e.toString());
+  }
+}
 
   @FXML
   private void handleExit() {
     System.exit(0);
   }
 
-  private void loadMainMenu() throws Exception {
+ private void loadMainMenu() throws Exception {
+  try {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainmenu.fxml"));
     Parent root = loader.load();
-    MainMenuController controller = loader.getController();
+
+    MainMenuController controller = loader.getController(); // can fail if fx:controller wrong
     Stage stage = (Stage) usernameField.getScene().getWindow();
-    controller.setStage(stage);
-    Scene scene = new Scene(root, 600, 500);
-    stage.setScene(scene);
+    stage.setScene(new Scene(root, 600, 500));
+  } catch (Exception e) {
+    e.printStackTrace();   // MUST
+    throw e;              // so your UI shows it's UI load
   }
+}
 }

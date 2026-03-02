@@ -2,8 +2,9 @@ package com.oceanview.backend.service;
 
 import com.oceanview.backend.model.User;
 import com.oceanview.backend.repo.UserRepo;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +17,43 @@ public class DataSeeder {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  @PostConstruct
+  private static boolean dataSeededOnce = false;
+
+  @EventListener(ApplicationReadyEvent.class)
   public void seedData() {
-    // Check if admin user exists
-    if (userRepo.findByUsername("reception").isEmpty()) {
-      User receptionUser = User.builder()
-          .username("reception")
-          .passwordHash(passwordEncoder.encode("Reception@123"))
-          .build();
-      userRepo.save(receptionUser);
-      System.out.println("✓ Admin user 'reception' created");
+    // Only run once per application instance
+    if (dataSeededOnce) {
+      return;
+    }
+    dataSeededOnce = true;
+
+    try {
+      String username = "reception";
+      String password = "Reception@123";
+
+      // Try to find existing user
+      var existingUser = userRepo.findByUsername(username);
+
+      if (existingUser.isPresent()) {
+        // User exists - update password to ensure it's correct
+        User user = existingUser.get();
+        String newHash = passwordEncoder.encode(password);
+        user.setPasswordHash(newHash);
+        userRepo.save(user);
+        System.out.println("✓ User '" + username + "' password updated");
+      } else {
+        // User doesn't exist - create new one
+        User receptionUser = User.builder()
+            .username(username)
+            .passwordHash(passwordEncoder.encode(password))
+            .build();
+        userRepo.save(receptionUser);
+        System.out.println("✓ User '" + username + "' created with password '" + password + "'");
+      }
+
+    } catch (Exception e) {
+      System.err.println("✗ Error in DataSeeder: " + e.getMessage());
+      e.printStackTrace();
     }
   }
 }
