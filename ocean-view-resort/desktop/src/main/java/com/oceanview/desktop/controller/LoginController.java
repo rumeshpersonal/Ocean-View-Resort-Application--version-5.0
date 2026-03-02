@@ -53,12 +53,18 @@ private void handleLogin() {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainmenu.fxml"));
     Parent root = loader.load();
 
-    MainMenuController controller = loader.getController(); // can fail if fx:controller wrong
+    MainMenuController controller = loader.getController();
+
     Stage stage = (Stage) usernameField.getScene().getWindow();
+
+    // IMPORTANT: give the stage to MainMenuController so Logout can work
+    controller.setStage(stage);
+
     stage.setScene(new Scene(root, 600, 500));
+    stage.setTitle("Main Menu"); // optional
   } catch (Exception e) {
-    e.printStackTrace();   // MUST
-    throw e;              // so your UI shows it's UI load
+    e.printStackTrace();
+    throw e;
   }
 }
 }
