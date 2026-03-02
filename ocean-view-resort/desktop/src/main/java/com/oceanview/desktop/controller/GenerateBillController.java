@@ -24,7 +24,7 @@ public class GenerateBillController {
   @FXML private Label rateLabel;
   @FXML private Label totalLabel;
   @FXML private Label messageLabel;
-
+@FXML private Label roomTypeLabel;
   // ✅ Snapshot area (the VBox in FXML)
   @FXML private VBox billPane;
 
@@ -50,10 +50,12 @@ public class GenerateBillController {
       ApiClient.BillResponse bill = ApiClient.generateBill(reservationNo);
 
       nightsLabel.setText("Nights: " + bill.nights);
+      roomTypeLabel.setText(bill.roomType);
       rateLabel.setText("Rate/Night: Rs. " + String.format("%.2f", bill.ratePerNight));
       totalLabel.setText("Total Amount: Rs. " + String.format("%.2f", bill.totalAmount));
 
       messageLabel.setText("Bill generated successfully");
+      
       billReady = true;
       downloadBtn.setDisable(false);
 
@@ -106,6 +108,7 @@ public class GenerateBillController {
   }
 
   private void clearLabels() {
+    roomTypeLabel.setText("-");
     nightsLabel.setText("-");
     rateLabel.setText("-");
     totalLabel.setText("-");

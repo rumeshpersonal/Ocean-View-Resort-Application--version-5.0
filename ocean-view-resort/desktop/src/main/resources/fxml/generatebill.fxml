@@ -62,12 +62,19 @@
                    style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #1e3a5f;"/>
           </HBox>
 
-          <HBox spacing="20" alignment="CENTER_LEFT">
-            <Label text="Rate per Night:" styleClass="label-form" minWidth="150"/>
-            <Label fx:id="rateLabel"
-                   text="-"
-                   style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #546e7a;"/>
-          </HBox>
+       <HBox spacing="20" alignment="CENTER_LEFT">
+  <Label text="Room Type:" styleClass="label-form" minWidth="150"/>
+  <Label fx:id="roomTypeLabel"
+         text="-"
+         style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #1e3a5f;"/>
+</HBox>
+
+<HBox spacing="20" alignment="CENTER_LEFT">
+  <Label text="Rate per Night:" styleClass="label-form" minWidth="150"/>
+  <Label fx:id="rateLabel"
+         text="-"
+         style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #546e7a;"/>
+</HBox>
 
           <Separator/>
 

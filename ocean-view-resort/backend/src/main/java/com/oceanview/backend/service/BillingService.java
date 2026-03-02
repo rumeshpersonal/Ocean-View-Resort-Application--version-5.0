@@ -35,10 +35,10 @@ public class BillingService {
       throw new IllegalArgumentException("Invalid reservation dates");
     }
 
-    // Room rate & type
-    double ratePerNight = reservation.getRoomType().getRatePerNight();
-    String roomTypeName = reservation.getRoomType().toString();
-    double totalAmount = nights * ratePerNight;
+  // Room rate & type
+  double ratePerNight = reservation.getRoomType().getRatePerNight();
+  String roomTypeName = reservation.getRoomType().getTypeName().name();
+  double totalAmount = nights * ratePerNight;
 
     // Check if bill already exists
     Bill existingBill = billRepo.findByReservation_ReservationNo(reservationNo).orElse(null);
@@ -61,7 +61,9 @@ public class BillingService {
         .createdAt(LocalDateTime.now())
         .build();
 
-    billRepo.save(bill);
+    if (bill != null) {
+      billRepo.save(bill);
+    }
 
     return new BillResponse(
         reservationNo,
