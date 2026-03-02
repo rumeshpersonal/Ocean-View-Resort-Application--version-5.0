@@ -27,7 +27,7 @@ public class ReservationController {
   }
 
   @GetMapping("/{reservationNo}")
-  public ResponseEntity<?> viewReservation(@PathVariable String reservationNo) {
+  public ResponseEntity<?> viewReservation(@PathVariable("reservationNo") String reservationNo) {
     try {
       ReservationResponse response = reservationService.viewReservation(reservationNo);
       return ResponseEntity.ok(response);

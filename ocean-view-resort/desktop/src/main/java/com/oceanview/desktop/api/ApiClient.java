@@ -110,21 +110,33 @@ public static ReservationResponse getReservation(String reservationNo) throws Ex
    * Generate bill
    */
   public static BillResponse generateBill(String reservationNo) throws Exception {
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI(BASE_URL + "/bills/" + reservationNo))
-        .header("Authorization", "Bearer " + authToken)
-        .POST(HttpRequest.BodyPublishers.noBody())
-        .build();
+  HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/bills/" + URLEncoder.encode(reservationNo, StandardCharsets.UTF_8)))
+      .header("Authorization", "Bearer " + authToken)
+      .POST(HttpRequest.BodyPublishers.noBody())
+      .build();
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    
-    if (response.statusCode() != 201) {
-      JsonNode errorNode = mapper.readTree(response.body());
-      throw new Exception(errorNode.get("error").asText());
-    }
+  HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+  String body = response.body() == null ? "" : response.body();
 
-    return mapper.readValue(response.body(), BillResponse.class);
+  // Accept both 200 and 201 as success
+  if (response.statusCode() >= 200 && response.statusCode() < 300) {
+    return mapper.readValue(body, BillResponse.class);
   }
+
+  // Safe error extraction
+  String msg = "Request failed (" + response.statusCode() + ")";
+  try {
+    JsonNode node = mapper.readTree(body);
+    if (node.hasNonNull("error")) msg = node.get("error").asText();
+    else if (node.hasNonNull("message")) msg = node.get("message").asText();
+    else msg = msg + " - " + body;
+  } catch (Exception ignore) {
+    msg = msg + " - " + body;
+  }
+
+  throw new Exception(msg);
+}
 
   /**
    * Get help text
