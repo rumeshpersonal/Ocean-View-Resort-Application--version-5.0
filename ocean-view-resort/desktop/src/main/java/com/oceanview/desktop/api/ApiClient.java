@@ -141,21 +141,40 @@ public static ReservationResponse getReservation(String reservationNo) throws Ex
   /**
    * Get help text
    */
-  public static String getHelp() throws Exception {
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI(BASE_URL + "/help"))
-        .GET()
-        .build();
+public static String getHelp() throws Exception {
+  HttpRequest request = HttpRequest.newBuilder()
+      .uri(new URI(BASE_URL + "/help"))
+      .GET()
+      .build();
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    
-    if (response.statusCode() != 200) {
-      throw new Exception("Failed to fetch help");
-    }
+  HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    JsonNode responseNode = mapper.readTree(response.body());
-    return responseNode.get("text").asText();
+  String body = response.body() == null ? "" : response.body();
+
+  if (response.statusCode() >= 200 && response.statusCode() < 300) {
+    JsonNode node = mapper.readTree(body);
+
+    // backend returns {"message": "..."}
+    // but keep fallback in case you change backend later
+    String help = node.path("message").asText(null);
+    if (help == null) help = node.path("text").asText("");
+
+    return help;
   }
+
+  // Safe error message (no null .asText() crashes)
+  String msg = "Failed to fetch help (" + response.statusCode() + ")";
+  try {
+    JsonNode node = mapper.readTree(body);
+    if (node.hasNonNull("error")) msg = node.get("error").asText();
+    else if (node.hasNonNull("message")) msg = node.get("message").asText();
+    else msg = msg + " - " + body;
+  } catch (Exception ignore) {
+    msg = msg + " - " + body;
+  }
+
+  throw new Exception(msg);
+}
 
   public static boolean isAuthenticated() {
     return authToken != null;
