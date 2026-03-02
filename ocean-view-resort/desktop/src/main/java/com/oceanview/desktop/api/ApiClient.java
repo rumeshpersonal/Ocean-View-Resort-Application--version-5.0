@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class ApiClient {
@@ -70,22 +71,40 @@ public class ApiClient {
   /**
    * Get reservation details
    */
-  public static ReservationResponse getReservation(String reservationNo) throws Exception {
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI(BASE_URL + "/reservations/" + reservationNo))
-        .header("Authorization", "Bearer " + authToken)
-        .GET()
-        .build();
+public static ReservationResponse getReservation(String reservationNo) throws Exception {
+  HttpRequest req = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/reservations/" + URLEncoder.encode(reservationNo, StandardCharsets.UTF_8)))
+      .header("Authorization", "Bearer " + authToken)
+      .GET()
+      .build();
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    
-    if (response.statusCode() != 200) {
-      JsonNode errorNode = mapper.readTree(response.body());
-      throw new Exception(errorNode.get("error").asText());
-    }
+  HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
 
-    return mapper.readValue(response.body(), ReservationResponse.class);
+  String body = res.body() == null ? "" : res.body();
+
+  if (res.statusCode() >= 200 && res.statusCode() < 300) {
+    return mapper.readValue(body, ReservationResponse.class);
   }
+
+  // ---- SAFE error extraction ----
+  String msg = "Request failed (" + res.statusCode() + ")";
+  try {
+    JsonNode node = mapper.readTree(body);
+
+    // Our API format: {"error":"..."}
+    if (node.hasNonNull("error")) msg = node.get("error").asText();
+
+    // Spring default format: {"message":"..."} or sometimes {"error":"Not Found"}
+    else if (node.hasNonNull("message")) msg = node.get("message").asText();
+    else if (node.hasNonNull("error")) msg = node.get("error").asText();
+
+    else msg = msg + " - " + body;
+  } catch (Exception ignore) {
+    msg = msg + " - " + body;
+  }
+
+  throw new RuntimeException(msg);
+}
 
   /**
    * Generate bill
