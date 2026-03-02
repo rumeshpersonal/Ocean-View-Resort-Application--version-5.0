@@ -53,12 +53,24 @@ private void handleLogin() {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainmenu.fxml"));
     Parent root = loader.load();
 
-    MainMenuController controller = loader.getController(); // can fail if fx:controller wrong
+    MainMenuController controller = loader.getController();
+
     Stage stage = (Stage) usernameField.getScene().getWindow();
-    stage.setScene(new Scene(root, 600, 500));
+
+    // IMPORTANT: give the stage to MainMenuController so Logout can work
+    controller.setStage(stage);
+
+    Scene scene = new Scene(root, 900, 700);
+    
+    // Load and apply stylesheet
+    String stylesheet = getClass().getResource("/styles.css").toExternalForm();
+    scene.getStylesheets().add(stylesheet);
+    
+    stage.setScene(scene);
+    stage.setTitle("Ocean View Resort - Main Menu");
   } catch (Exception e) {
-    e.printStackTrace();   // MUST
-    throw e;              // so your UI shows it's UI load
+    e.printStackTrace();
+    throw e;
   }
 }
 }

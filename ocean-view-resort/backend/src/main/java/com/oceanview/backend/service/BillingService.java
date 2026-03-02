@@ -21,27 +21,35 @@ public class BillingService {
   private ReservationRepo reservationRepo;
 
   public BillResponse generateBill(String reservationNo) {
+
     Reservation reservation = reservationRepo.findByReservationNo(reservationNo)
         .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
 
     // Calculate nights
-    int nights = (int) ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
+    int nights = (int) ChronoUnit.DAYS.between(
+        reservation.getCheckIn(),
+        reservation.getCheckOut()
+    );
+
     if (nights <= 0) {
       throw new IllegalArgumentException("Invalid reservation dates");
     }
 
-    // Calculate total
-    double ratePerNight = reservation.getRoomType().getRatePerNight();
-    double totalAmount = nights * ratePerNight;
+  // Room rate & type
+  double ratePerNight = reservation.getRoomType().getRatePerNight();
+  String roomTypeName = reservation.getRoomType().getTypeName().name();
+  double totalAmount = nights * ratePerNight;
 
     // Check if bill already exists
     Bill existingBill = billRepo.findByReservation_ReservationNo(reservationNo).orElse(null);
+
     if (existingBill != null) {
       return new BillResponse(
           reservationNo,
           existingBill.getNights(),
           ratePerNight,
-          existingBill.getTotalAmount()
+          existingBill.getTotalAmount(),
+          roomTypeName
       );
     }
 
@@ -52,13 +60,17 @@ public class BillingService {
         .totalAmount(totalAmount)
         .createdAt(LocalDateTime.now())
         .build();
-    billRepo.save(bill);
+
+    if (bill != null) {
+      billRepo.save(bill);
+    }
 
     return new BillResponse(
         reservationNo,
         nights,
         ratePerNight,
-        totalAmount
+        totalAmount,
+        roomTypeName
     );
   }
 }

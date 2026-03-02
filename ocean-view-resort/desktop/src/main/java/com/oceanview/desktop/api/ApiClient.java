@@ -229,5 +229,6 @@ public static String getHelp() throws Exception {
     public int nights;
     public double ratePerNight;
     public double totalAmount;
+    public String roomType;
   }
 }
