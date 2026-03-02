@@ -24,6 +24,12 @@
       <artifactId>javafx-controls</artifactId>
       <version>${javafx.version}</version>
     </dependency>
+    <!-- Needed for SwingFXUtils to save snapshot as image -->
+<dependency>
+  <groupId>org.openjfx</groupId>
+  <artifactId>javafx-swing</artifactId>
+  <version>${javafx.version}</version>
+</dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
