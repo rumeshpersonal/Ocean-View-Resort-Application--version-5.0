@@ -15,7 +15,6 @@
     <java.version>17</java.version>
     <spring-boot.version>3.3.2</spring-boot.version>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -53,6 +52,25 @@
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
+    <!-- JJWT (JWT token library) -->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-api</artifactId>
+      <version>0.11.5</version>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>0.11.5</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId>
+      <version>0.11.5</version>
+      <scope>runtime</scope>
+    </dependency>
+
     <!-- MySQL -->
     <dependency>
       <groupId>com.mysql</groupId>
@@ -80,11 +98,13 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>

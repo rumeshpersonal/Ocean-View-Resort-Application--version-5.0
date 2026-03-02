@@ -19,8 +19,8 @@
               style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
       <Button text="3. Generate Bill" onAction="#handleGenerateBill" 
               style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
-      <Button text="4. View Help & Usage Guide" onAction="#handleHelp" 
-              style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
+     <Button text="4. View Help &amp; Usage Guide" onAction="#handleHelp"
+        style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
       
       <Separator/>
       

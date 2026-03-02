@@ -15,12 +15,12 @@ public class BillingController {
   private BillingService billingService;
 
   @PostMapping("/{reservationNo}")
-  public ResponseEntity<?> generateBill(@PathVariable String reservationNo) {
-    try {
-      BillResponse response = billingService.generateBill(reservationNo);
-      return ResponseEntity.ok(response);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.status(404).body(new ErrorResponse(e.getMessage()));
-    }
+public ResponseEntity<?> generateBill(@PathVariable("reservationNo") String reservationNo) {
+  try {
+    BillResponse response = billingService.generateBill(reservationNo);
+    return ResponseEntity.status(201).body(response); // <-- 201
+  } catch (IllegalArgumentException e) {
+    return ResponseEntity.status(404).body(new ErrorResponse(e.getMessage()));
   }
+}
 }

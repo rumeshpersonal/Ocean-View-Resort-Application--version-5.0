@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class ApiClient {
@@ -70,61 +71,110 @@ public class ApiClient {
   /**
    * Get reservation details
    */
-  public static ReservationResponse getReservation(String reservationNo) throws Exception {
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI(BASE_URL + "/reservations/" + reservationNo))
-        .header("Authorization", "Bearer " + authToken)
-        .GET()
-        .build();
+public static ReservationResponse getReservation(String reservationNo) throws Exception {
+  HttpRequest req = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/reservations/" + URLEncoder.encode(reservationNo, StandardCharsets.UTF_8)))
+      .header("Authorization", "Bearer " + authToken)
+      .GET()
+      .build();
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    
-    if (response.statusCode() != 200) {
-      JsonNode errorNode = mapper.readTree(response.body());
-      throw new Exception(errorNode.get("error").asText());
-    }
+  HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
 
-    return mapper.readValue(response.body(), ReservationResponse.class);
+  String body = res.body() == null ? "" : res.body();
+
+  if (res.statusCode() >= 200 && res.statusCode() < 300) {
+    return mapper.readValue(body, ReservationResponse.class);
   }
+
+  // ---- SAFE error extraction ----
+  String msg = "Request failed (" + res.statusCode() + ")";
+  try {
+    JsonNode node = mapper.readTree(body);
+
+    // Our API format: {"error":"..."}
+    if (node.hasNonNull("error")) msg = node.get("error").asText();
+
+    // Spring default format: {"message":"..."} or sometimes {"error":"Not Found"}
+    else if (node.hasNonNull("message")) msg = node.get("message").asText();
+    else if (node.hasNonNull("error")) msg = node.get("error").asText();
+
+    else msg = msg + " - " + body;
+  } catch (Exception ignore) {
+    msg = msg + " - " + body;
+  }
+
+  throw new RuntimeException(msg);
+}
 
   /**
    * Generate bill
    */
   public static BillResponse generateBill(String reservationNo) throws Exception {
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI(BASE_URL + "/bills/" + reservationNo))
-        .header("Authorization", "Bearer " + authToken)
-        .POST(HttpRequest.BodyPublishers.noBody())
-        .build();
+  HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/bills/" + URLEncoder.encode(reservationNo, StandardCharsets.UTF_8)))
+      .header("Authorization", "Bearer " + authToken)
+      .POST(HttpRequest.BodyPublishers.noBody())
+      .build();
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    
-    if (response.statusCode() != 201) {
-      JsonNode errorNode = mapper.readTree(response.body());
-      throw new Exception(errorNode.get("error").asText());
-    }
+  HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+  String body = response.body() == null ? "" : response.body();
 
-    return mapper.readValue(response.body(), BillResponse.class);
+  // Accept both 200 and 201 as success
+  if (response.statusCode() >= 200 && response.statusCode() < 300) {
+    return mapper.readValue(body, BillResponse.class);
   }
+
+  // Safe error extraction
+  String msg = "Request failed (" + response.statusCode() + ")";
+  try {
+    JsonNode node = mapper.readTree(body);
+    if (node.hasNonNull("error")) msg = node.get("error").asText();
+    else if (node.hasNonNull("message")) msg = node.get("message").asText();
+    else msg = msg + " - " + body;
+  } catch (Exception ignore) {
+    msg = msg + " - " + body;
+  }
+
+  throw new Exception(msg);
+}
 
   /**
    * Get help text
    */
-  public static String getHelp() throws Exception {
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI(BASE_URL + "/help"))
-        .GET()
-        .build();
+public static String getHelp() throws Exception {
+  HttpRequest request = HttpRequest.newBuilder()
+      .uri(new URI(BASE_URL + "/help"))
+      .GET()
+      .build();
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    
-    if (response.statusCode() != 200) {
-      throw new Exception("Failed to fetch help");
-    }
+  HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    JsonNode responseNode = mapper.readTree(response.body());
-    return responseNode.get("text").asText();
+  String body = response.body() == null ? "" : response.body();
+
+  if (response.statusCode() >= 200 && response.statusCode() < 300) {
+    JsonNode node = mapper.readTree(body);
+
+    // backend returns {"message": "..."}
+    // but keep fallback in case you change backend later
+    String help = node.path("message").asText(null);
+    if (help == null) help = node.path("text").asText("");
+
+    return help;
   }
+
+  // Safe error message (no null .asText() crashes)
+  String msg = "Failed to fetch help (" + response.statusCode() + ")";
+  try {
+    JsonNode node = mapper.readTree(body);
+    if (node.hasNonNull("error")) msg = node.get("error").asText();
+    else if (node.hasNonNull("message")) msg = node.get("message").asText();
+    else msg = msg + " - " + body;
+  } catch (Exception ignore) {
+    msg = msg + " - " + body;
+  }
+
+  throw new Exception(msg);
+}
 
   public static boolean isAuthenticated() {
     return authToken != null;
