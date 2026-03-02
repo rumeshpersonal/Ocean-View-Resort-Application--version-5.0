@@ -5,49 +5,68 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.oceanview.desktop.controller.CreateReservationController">
-  <center>
-    <VBox spacing="15" style="-fx-padding: 25;">
-      <Label text="Create New Reservation" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Guest Name:" minWidth="120"/>
-        <TextField fx:id="guestNameField" prefWidth="250"/>
-      </HBox>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Address:" minWidth="120"/>
-        <TextField fx:id="addressField" prefWidth="250"/>
-      </HBox>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Contact:" minWidth="120"/>
-        <TextField fx:id="contactField" prefWidth="250" promptText="0771234567 or +94771234567"/>
-      </HBox>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Room Type:" minWidth="120"/>
-        <ComboBox fx:id="roomTypeCombo" prefWidth="250"/>
-      </HBox>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Check-in (YYYY-MM-DD):" minWidth="120"/>
-        <TextField fx:id="checkInField" prefWidth="250"/>
-      </HBox>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Check-out (YYYY-MM-DD):" minWidth="120"/>
-        <TextField fx:id="checkOutField" prefWidth="250"/>
-      </HBox>
-      
-      <Separator/>
-      
-      <Label fx:id="messageLabel" style="-fx-text-fill: blue;"/>
-      
-      <HBox spacing="10">
-        <Button text="Create" onAction="#handleCreate" style="-fx-padding: 10; -fx-font-size: 14;"/>
-        <Button text="Cancel" onAction="#handleCancel" style="-fx-padding: 10; -fx-font-size: 14;"/>
-      </HBox>
+            fx:controller="com.oceanview.desktop.controller.CreateReservationController"
+            stylesheets="@../styles.css">
+  
+  <top>
+    <VBox styleClass="header-pane" alignment="CENTER">
+      <Label text="Ocean View Resort" styleClass="header-title"/>
+      <Label text="New Reservation" styleClass="header-subtitle"/>
     </VBox>
+  </top>
+  
+  <center>
+    <StackPane>
+      <VBox styleClass="container-form" alignment="TOP_CENTER" spacing="18" maxWidth="550">
+        <VBox.margin>
+          <Insets top="20"/>
+        </VBox.margin>
+        
+        <Label text="Create New Reservation" styleClass="title-section"/>
+        <Separator/>
+        
+        <VBox spacing="16">
+          <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Guest Name:" styleClass="label-form" minWidth="140"/>
+            <TextField fx:id="guestNameField" styleClass="text-field" prefWidth="280"/>
+          </HBox>
+          
+          <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Address:" styleClass="label-form" minWidth="140"/>
+            <TextField fx:id="addressField" styleClass="text-field" prefWidth="280"/>
+          </HBox>
+          
+          <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Contact Number:" styleClass="label-form" minWidth="140"/>
+            <TextField fx:id="contactField" styleClass="text-field" prefWidth="280" 
+                       promptText="07712345678 or +94771234567"/>
+          </HBox>
+          
+          <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Room Type:" styleClass="label-form" minWidth="140"/>
+            <ComboBox fx:id="roomTypeCombo" styleClass="combo-box" prefWidth="280"/>
+          </HBox>
+          
+          <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Check-in Date:" styleClass="label-form" minWidth="140"/>
+            <TextField fx:id="checkInField" styleClass="text-field" prefWidth="280" promptText="YYYY-MM-DD"/>
+          </HBox>
+          
+          <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Check-out Date:" styleClass="label-form" minWidth="140"/>
+            <TextField fx:id="checkOutField" styleClass="text-field" prefWidth="280" promptText="YYYY-MM-DD"/>
+          </HBox>
+        </VBox>
+        
+        <Separator/>
+        
+        <Label fx:id="messageLabel" styleClass="message-info" wrapText="true"/>
+        
+        <HBox spacing="15" alignment="CENTER">
+          <Button text="Create Reservation" onAction="#handleCreate" styleClass="button-success"/>
+          <Button text="Cancel" onAction="#handleCancel" styleClass="button-secondary"/>
+        </HBox>
+      </VBox>
+    </StackPane>
   </center>
 </BorderPane>

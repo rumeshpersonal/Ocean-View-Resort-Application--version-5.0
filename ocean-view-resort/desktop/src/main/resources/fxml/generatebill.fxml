@@ -5,41 +5,64 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.oceanview.desktop.controller.GenerateBillController">
-  <center>
-    <VBox spacing="15" style="-fx-padding: 25;">
-      <Label text="Generate Bill" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Reservation No:" minWidth="140"/>
-        <TextField fx:id="reservationNoField" prefWidth="250" promptText="e.g., RES-2026-0001"/>
-        <Button text="Generate" onAction="#handleGenerateBill" style="-fx-padding: 8;"/>
-      </HBox>
-      
-      <Separator/>
-      
-      <HBox spacing="10">
-        <Label text="Nights:" minWidth="140"/>
-        <Label fx:id="nightsLabel" text="-" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-      </HBox>
-      
-      <HBox spacing="10">
-        <Label text="Rate/Night:" minWidth="140"/>
-        <Label fx:id="rateLabel" text="-" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-      </HBox>
-      
-      <HBox spacing="10">
-        <Label text="Total Amount:" minWidth="140"/>
-        <Label fx:id="totalLabel" text="-" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: green;"/>
-      </HBox>
-      
-      <Separator/>
-      
-      <Label fx:id="messageLabel" style="-fx-text-fill: blue;"/>
-      
-      <HBox spacing="10">
-        <Button text="Cancel" onAction="#handleCancel" style="-fx-padding: 10; -fx-font-size: 14;"/>
-      </HBox>
+            fx:controller="com.oceanview.desktop.controller.GenerateBillController"
+            stylesheets="@../styles.css">
+  
+  <top>
+    <VBox styleClass="header-pane" alignment="CENTER">
+      <Label text="Ocean View Resort" styleClass="header-title"/>
+      <Label text="Billing System" styleClass="header-subtitle"/>
     </VBox>
+  </top>
+  
+  <center>
+    <StackPane>
+      <VBox styleClass="container-form" alignment="TOP_CENTER" spacing="18" maxWidth="550">
+        <VBox.margin>
+          <Insets top="20"/>
+        </VBox.margin>
+        
+        <Label text="Generate Bill" styleClass="title-section"/>
+        <Separator/>
+        
+        <HBox spacing="15" alignment="CENTER_LEFT">
+          <Label text="Reservation No:" styleClass="label-form" minWidth="150"/>
+          <TextField fx:id="reservationNoField" styleClass="text-field" prefWidth="250" promptText="e.g., RES-2026-0001"/>
+          <Button text="Generate" onAction="#handleGenerateBill" styleClass="button-success"/>
+        </HBox>
+        
+        <Separator/>
+        
+        <VBox spacing="14" styleClass="container-section">
+          <Label text="Bill Details" styleClass="title-secondary"/>
+          <Separator/>
+          
+          <HBox spacing="20" alignment="CENTER_LEFT">
+            <Label text="Number of Nights:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="nightsLabel" text="-" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #1e3a5f;"/>
+          </HBox>
+          
+          <HBox spacing="20" alignment="CENTER_LEFT">
+            <Label text="Rate per Night:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="rateLabel" text="-" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #546e7a;"/>
+          </HBox>
+          
+          <Separator/>
+          
+          <HBox spacing="20" alignment="CENTER_LEFT">
+            <Label text="Total Amount:" styleClass="label-form" minWidth="150" style="-fx-font-size: 15;"/>
+            <Label fx:id="totalLabel" text="-" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
+          </HBox>
+        </VBox>
+        
+        <Separator/>
+        
+        <Label fx:id="messageLabel" styleClass="message-info" wrapText="true"/>
+        
+        <HBox spacing="15" alignment="CENTER">
+          <Button text="Back to Menu" onAction="#handleCancel" styleClass="button-secondary"/>
+        </HBox>
+      </VBox>
+    </StackPane>
   </center>
 </BorderPane>

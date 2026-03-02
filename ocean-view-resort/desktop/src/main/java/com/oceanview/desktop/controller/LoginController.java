@@ -60,8 +60,14 @@ private void handleLogin() {
     // IMPORTANT: give the stage to MainMenuController so Logout can work
     controller.setStage(stage);
 
-    stage.setScene(new Scene(root, 600, 500));
-    stage.setTitle("Main Menu"); // optional
+    Scene scene = new Scene(root, 900, 700);
+    
+    // Load and apply stylesheet
+    String stylesheet = getClass().getResource("/styles.css").toExternalForm();
+    scene.getStylesheets().add(stylesheet);
+    
+    stage.setScene(scene);
+    stage.setTitle("Ocean View Resort - Main Menu");
   } catch (Exception e) {
     e.printStackTrace();
     throw e;

@@ -5,33 +5,71 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.oceanview.desktop.controller.ViewReservationController">
-  <center>
-    <VBox spacing="15" style="-fx-padding: 25;">
-      <Label text="View Reservation Details" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-      
-      <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Reservation No:" minWidth="140"/>
-        <TextField fx:id="reservationNoField" prefWidth="250" promptText="e.g., RES-2026-0001"/>
-        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 8;"/>
-      </HBox>
-      
-      <Separator/>
-      
-      <Label fx:id="guestNameLabel" text="Guest: -"/>
-      <Label fx:id="addressLabel" text="Address: -"/>
-      <Label fx:id="contactLabel" text="Contact: -"/>
-      <Label fx:id="roomTypeLabel" text="Room Type: -"/>
-      <Label fx:id="checkInLabel" text="Check-in: -"/>
-      <Label fx:id="checkOutLabel" text="Check-out: -"/>
-      
-      <Separator/>
-      
-      <Label fx:id="messageLabel" style="-fx-text-fill: blue;"/>
-      
-      <HBox spacing="10">
-        <Button text="Cancel" onAction="#handleCancel" style="-fx-padding: 10; -fx-font-size: 14;"/>
-      </HBox>
+            fx:controller="com.oceanview.desktop.controller.ViewReservationController"
+            stylesheets="@../styles.css">
+  
+  <top>
+    <VBox styleClass="header-pane" alignment="CENTER">
+      <Label text="Ocean View Resort" styleClass="header-title"/>
+      <Label text="Reservation Details" styleClass="header-subtitle"/>
     </VBox>
+  </top>
+  
+  <center>
+    <StackPane>
+      <VBox styleClass="container-form" alignment="TOP_CENTER" spacing="18" maxWidth="600">
+        <VBox.margin>
+          <Insets top="20"/>
+        </VBox.margin>
+        
+        <Label text="View Reservation Details" styleClass="title-section"/>
+        <Separator/>
+        
+        <HBox spacing="15" alignment="CENTER_LEFT">
+          <Label text="Reservation No:" styleClass="label-form" minWidth="150"/>
+          <TextField fx:id="reservationNoField" styleClass="text-field" prefWidth="250" promptText="e.g., RES-2026-0001"/>
+          <Button text="Search" onAction="#handleSearch" styleClass="button-primary"/>
+        </HBox>
+        
+        <Separator/>
+        
+        <VBox spacing="12" styleClass="container-section">
+          <Label text="Reservation Information" styleClass="title-secondary"/>
+          <Separator/>
+          <HBox spacing="15">
+            <Label text="Guest Name:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="guestNameLabel" text="-" styleClass="label-standard"/>
+          </HBox>
+          <HBox spacing="15">
+            <Label text="Address:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="addressLabel" text="-" styleClass="label-standard"/>
+          </HBox>
+          <HBox spacing="15">
+            <Label text="Contact Number:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="contactLabel" text="-" styleClass="label-standard"/>
+          </HBox>
+          <HBox spacing="15">
+            <Label text="Room Type:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="roomTypeLabel" text="-" styleClass="label-standard" style="-fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+          </HBox>
+          <HBox spacing="15">
+            <Label text="Check-in Date:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="checkInLabel" text="-" styleClass="label-standard"/>
+          </HBox>
+          <HBox spacing="15">
+            <Label text="Check-out Date:" styleClass="label-form" minWidth="150"/>
+            <Label fx:id="checkOutLabel" text="-" styleClass="label-standard"/>
+          </HBox>
+        </VBox>
+        
+        <Separator/>
+        
+        <Label fx:id="messageLabel" styleClass="message-info" wrapText="true"/>
+        
+        <HBox spacing="15" alignment="CENTER">
+          <Button text="Back to Menu" onAction="#handleCancel" styleClass="button-secondary"/>
+        </HBox>
+      </VBox>
+    </StackPane>
   </center>
 </BorderPane>

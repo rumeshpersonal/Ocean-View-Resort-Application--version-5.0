@@ -5,29 +5,45 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.oceanview.desktop.controller.MainMenuController">
-  <center>
-    <VBox spacing="20" style="-fx-padding: 40;">
-      <Label text="Main Menu" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
-      <Label text="Select an operation below:" style="-fx-font-size: 14;"/>
-      
-      <Separator/>
-      
-      <Button text="1. Create New Reservation" onAction="#handleCreateReservation" 
-              style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
-      <Button text="2. View Reservation Details" onAction="#handleViewReservation" 
-              style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
-      <Button text="3. Generate Bill" onAction="#handleGenerateBill" 
-              style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
-     <Button text="4. View Help &amp; Usage Guide" onAction="#handleHelp"
-        style="-fx-padding: 15; -fx-font-size: 14; -fx-min-width: 300;"/>
-      
-      <Separator/>
-      
-      <HBox spacing="10">
-        <Button text="Logout" onAction="#handleLogout" style="-fx-padding: 10; -fx-font-size: 14;"/>
-        <Button text="Exit" onAction="#handleExit" style="-fx-padding: 10; -fx-font-size: 14;"/>
-      </HBox>
+            fx:controller="com.oceanview.desktop.controller.MainMenuController"
+            stylesheets="@../styles.css">
+  
+  <top>
+    <VBox styleClass="header-pane" alignment="CENTER">
+      <Label text="Ocean View Resort" styleClass="header-title"/>
+      <Label text="Reception Management" styleClass="header-subtitle"/>
     </VBox>
+  </top>
+  
+  <center>
+    <StackPane>
+      <VBox styleClass="container-main" alignment="TOP_CENTER" spacing="25" maxWidth="500">
+        <VBox.margin>
+          <Insets top="30"/>
+        </VBox.margin>
+        
+        <Label text="Main Menu" styleClass="title-section"/>
+        <Label text="Select an operation below:" styleClass="title-secondary"/>
+        <Separator/>
+        
+        <VBox spacing="12" alignment="CENTER">
+          <Button text="Create New Reservation" onAction="#handleCreateReservation" 
+                  styleClass="button-primary" prefWidth="400" prefHeight="45"/>
+          <Button text="View Reservation Details" onAction="#handleViewReservation" 
+                  styleClass="button-primary" prefWidth="400" prefHeight="45"/>
+          <Button text="Generate Bill" onAction="#handleGenerateBill" 
+                  styleClass="button-primary" prefWidth="400" prefHeight="45"/>
+          <Button text="View Help &amp; Usage Guide" onAction="#handleHelp"
+                  styleClass="button-primary" prefWidth="400" prefHeight="45"/>
+        </VBox>
+        
+        <Separator/>
+        
+        <HBox spacing="15" alignment="CENTER">
+          <Button text="Logout" onAction="#handleLogout" styleClass="button-secondary" minWidth="120"/>
+          <Button text="Exit" onAction="#handleExit" styleClass="button-danger" minWidth="120"/>
+        </HBox>
+      </VBox>
+    </StackPane>
   </center>
 </BorderPane>

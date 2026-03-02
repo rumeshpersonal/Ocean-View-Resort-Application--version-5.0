@@ -5,15 +5,36 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.oceanview.desktop.controller.HelpController">
-  <center>
-    <VBox spacing="15" style="-fx-padding: 20;">
-      <Label text="Help &amp; Usage Guide" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-      
-<TextArea fx:id="helpTextArea" prefHeight="400" prefWidth="600" editable="false" wrapText="true"/>      
-      <HBox spacing="10">
-        <Button text="Close" onAction="#handleClose" style="-fx-padding: 10; -fx-font-size: 14;"/>
-      </HBox>
+            fx:controller="com.oceanview.desktop.controller.HelpController"
+            stylesheets="@../styles.css">
+  
+  <top>
+    <VBox styleClass="header-pane" alignment="CENTER">
+      <Label text="Ocean View Resort" styleClass="header-title"/>
+      <Label text="Help &amp; Documentation" styleClass="header-subtitle"/>
     </VBox>
+  </top>
+  
+  <center>
+    <StackPane>
+      <VBox styleClass="container-form" alignment="TOP_CENTER" spacing="18">
+        <VBox.margin>
+          <Insets top="20"/>
+        </VBox.margin>
+        
+        <Label text="Help &amp; Usage Guide" styleClass="title-section"/>
+        <Separator/>
+        
+        <TextArea fx:id="helpTextArea" styleClass="text-area" prefHeight="450" prefWidth="700" 
+                  editable="false" wrapText="true"
+                  style="-fx-control-inner-background: #ffffff; -fx-font-size: 12; -fx-padding: 15;"/>
+        
+        <Separator/>
+        
+        <HBox spacing="15" alignment="CENTER">
+          <Button text="Close" onAction="#handleClose" styleClass="button-secondary" minWidth="120"/>
+        </HBox>
+      </VBox>
+    </StackPane>
   </center>
 </BorderPane>

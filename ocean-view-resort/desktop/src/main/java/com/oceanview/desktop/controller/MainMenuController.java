@@ -9,6 +9,7 @@ import com.oceanview.desktop.api.ApiClient;
 
 public class MainMenuController {
   private Stage stage;
+  private static final String STYLESHEET = "/styles.css";
 
   @FXML
   public void initialize() {
@@ -17,22 +18,22 @@ public class MainMenuController {
 
   @FXML
   private void handleCreateReservation() throws Exception {
-    loadScene("/fxml/createreservation.fxml", "Create Reservation");
+    loadScene("/fxml/createreservation.fxml", "Create Reservation", 900, 700);
   }
 
   @FXML
   private void handleViewReservation() throws Exception {
-    loadScene("/fxml/viewreservation.fxml", "View Reservation");
+    loadScene("/fxml/viewreservation.fxml", "View Reservation", 900, 700);
   }
 
   @FXML
   private void handleGenerateBill() throws Exception {
-    loadScene("/fxml/generatebill.fxml", "Generate Bill");
+    loadScene("/fxml/generatebill.fxml", "Generate Bill", 900, 700);
   }
 
   @FXML
   private void handleHelp() throws Exception {
-    loadScene("/fxml/help.fxml", "Help & Usage Guide");
+    loadScene("/fxml/help.fxml", "Help & Usage Guide", 950, 800);
   }
 
   @FXML
@@ -40,9 +41,15 @@ public class MainMenuController {
     ApiClient.logout();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
     Parent root = loader.load();
-    Scene scene = new Scene(root, 500, 400);
+    Scene scene = new Scene(root, 900, 700);
+    
+    // Apply stylesheet
+    String stylesheet = getClass().getResource(STYLESHEET).toExternalForm();
+    scene.getStylesheets().add(stylesheet);
+    
     if (stage != null) {
       stage.setScene(scene);
+      stage.setTitle("Ocean View Resort - Login");
     }
   }
 
@@ -51,13 +58,20 @@ public class MainMenuController {
     System.exit(0);
   }
 
-  private void loadScene(String fxmlPath, String title) throws Exception {
+  private void loadScene(String fxmlPath, String title, int width, int height) throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
     Parent root = loader.load();
-    Scene scene = new Scene(root);
+    Scene scene = new Scene(root, width, height);
+    
+    // Apply stylesheet
+    String stylesheet = getClass().getResource(STYLESHEET).toExternalForm();
+    scene.getStylesheets().add(stylesheet);
+    
     Stage newStage = new Stage();
-    newStage.setTitle(title);
+    newStage.setTitle("Ocean View Resort - " + title);
     newStage.setScene(scene);
+    newStage.setMinWidth(800);
+    newStage.setMinHeight(600);
     newStage.show();
   }
 
